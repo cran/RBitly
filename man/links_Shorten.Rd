@@ -2,7 +2,7 @@
 % Please edit documentation in R/Links.R
 \name{links_Shorten}
 \alias{links_Shorten}
-\title{Given a long URL, returns a Bitlink.}
+\title{Given a long URL, returns a short Bit.ly link.}
 \usage{
 links_Shorten(longUrl, domain = NULL, showRequestURL = FALSE)
 }
@@ -18,7 +18,8 @@ the default settings.}
 }
 \value{
 new_hash - designates if this is the first time this long_url was shortened by this user.
-The return value will equal 1 the first time a long_url is shortened. It will also then be added to the user history.
+The return value will equal 1 the first time a long_url is shortened. It will also then be added
+to the user history.
 
 hash - a bitly identifier for long_url which is unique to the given account.
 
@@ -32,7 +33,7 @@ across all Bitlinks that point to the same long_url.
 url - the actual Bitlink that should be used, and is a unique value for the given Bitly account.
 }
 \description{
-Given a long URL, returns a Bitlink.
+Given a long URL, returns a short Bit.ly link.
 }
 \note{
 The bitly API does not support shortening more than one long URL with a single API call.
@@ -50,7 +51,7 @@ spaces are all indications of errors. Please remember to strip leading and trail
 from any user input before shortening.
 }
 \examples{
-rbitlyApi("0906523ec6a8c78b33f9310e84e7a5c81e500909")
+options(Bit.ly = "0906523ec6a8c78b33f9310e84e7a5c81e500909")
 links_Shorten(longUrl = "http://slovnik.seznam.cz/")
 links_Shorten(longUrl = "https://travis-ci.org/dmpe/rbitly/builds/68231423", domain = "j.mp")
 }

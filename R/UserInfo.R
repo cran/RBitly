@@ -12,7 +12,6 @@
 #' @return display_name - (optional) the user's display name, if set.
 #' @return share_accounts - (optional) a list of the share accounts (Twitter or Facebook) linked to 
 #' the user's account.
-
 #' @return NOTICE: Only included in requests for a user's own info.
 #'
 #' @return apiKey - the user's bitly API key.
@@ -25,7 +24,6 @@
 #' new links.
 #' @return domain_preference_options - A list of the valid short domains that this account can 
 #' choose as a default.
-#'
 #' @return NOTICE: Only included for enterprise accounts (is_enterprise == 1 or has_master == 1).
 #' 
 #' @return sub_accounts - (optional) list of accounts associated with this account.
@@ -42,7 +40,7 @@
 #' @note Both returned columns (!) are character type.
 #'
 #' @examples 
-#' rbitlyApi("0906523ec6a8c78b33f9310e84e7a5c81e500909")
+#' options(Bit.ly = "0906523ec6a8c78b33f9310e84e7a5c81e500909")
 #' user_Info() 
 #' 
 #' @import stringr
@@ -52,10 +50,10 @@ user_Info <- function(showRequestURL = FALSE) {
   
   user_info_url <- "https://api-ssl.bitly.com/v3/user/info"
   
-  query <- list(access_token = rbitlyApi())
-
+  query <- list(access_token = auth_bitly(NULL))
+  
   df_user_info <- doRequest(user_info_url, query, showURL = showRequestURL)
-
+  
   df_user_info_data <- data.frame(ReturnValues = unlist(df_user_info$data))
   df_user_info_data$ReturnValues <- str_trim(as.character(df_user_info_data$ReturnValues))
   df_user_info_data$ReturnValuesDescription <- rownames(df_user_info_data)
@@ -63,7 +61,7 @@ user_Info <- function(showRequestURL = FALSE) {
   
   # convert to readable format 
   df_user_info_data[5, 1] <- as.character(as.POSIXct(as.integer(df_user_info_data[5, 1]), 
-                                                    origin = "1970-01-01", tz = "UTC"))
+                                                     origin = "1970-01-01", tz = "UTC"))
   
   return(df_user_info_data)
 }
@@ -98,7 +96,7 @@ user_Info <- function(showRequestURL = FALSE) {
 #' corresponding to the client_id of the encoding oauth application.
 #' 
 #' @examples 
-#' rbitlyApi("0906523ec6a8c78b33f9310e84e7a5c81e500909")
+#' options(Bit.ly = "0906523ec6a8c78b33f9310e84e7a5c81e500909")
 #' user_LinkHistory() 
 #'
 #' @export
@@ -107,7 +105,7 @@ user_LinkHistory <- function(limit = 100, private = "off", archived = "both", ex
   
   user_linkHistory_url <- "https://api-ssl.bitly.com/v3/user/link_history"
   
-  query <- list(access_token = rbitlyApi(), limit = limit, private = private, archived = archived, expand_client_id = expand_client_id)
+  query <- list(access_token = auth_bitly(NULL), limit = limit, private = private, archived = archived, expand_client_id = expand_client_id)
   
   df_history <- doRequest(user_linkHistory_url, query, showURL = showRequestURL)
   df_history_data <- df_history$data$link_history
@@ -130,7 +128,7 @@ user_LinkHistory <- function(limit = 100, private = "off", archived = "both", ex
 #' @return tracking_domains - a list of tracking domains configured for the authenticated user.
 #'
 #' @examples 
-#' rbitlyApi("0906523ec6a8c78b33f9310e84e7a5c81e500909")
+#' options(Bit.ly = "0906523ec6a8c78b33f9310e84e7a5c81e500909")
 #' user_TrackingDomains()
 #' 
 #' @export
@@ -138,7 +136,7 @@ user_TrackingDomains <- function(showRequestURL = FALSE) {
   
   user_tracking_domain_list_url <- "https://api-ssl.bitly.com/v3/user/tracking_domain_list"
   
-  query <- list(access_token = rbitlyApi(), showURL = showRequestURL)
+  query <- list(access_token = auth_bitly(NULL), showURL = showRequestURL)
   
   df_tracking_domain_list <- doRequest(user_tracking_domain_list_url, query)
   df_tracking_domain_list_data <- df_tracking_domain_list$data$tracking_domains
